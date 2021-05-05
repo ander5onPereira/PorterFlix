@@ -1,0 +1,21 @@
+node_modules/
+.expo/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+EXCUIR/
+upcoming.json
+details.json
+src/Routes/
+src/server
+src/pages/listFilme
+src/pages/pagTest
+stylos.tsx
+yarn-error.log
+# macOS
+.DS_Store
