@@ -3,6 +3,7 @@ import React from "react";
 import { Image } from "react-native";
 import Logo from "./images/PorterFlix-logo.png";
 import Detalhe from "./pages/Detalhe";
+
 import Home from "./pages/Home";
 import ScrollInfinito from "./pages/ScrollInfinito";
 const Stack = createStackNavigator();

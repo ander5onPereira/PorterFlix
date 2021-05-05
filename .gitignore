@@ -17,5 +17,7 @@ src/pages/listFilme
 src/pages/pagTest
 stylos.tsx
 yarn-error.log
+
+config.ts
 # macOS
 .DS_Store
