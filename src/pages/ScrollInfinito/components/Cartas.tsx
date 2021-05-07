@@ -1,30 +1,24 @@
 import React from 'react'
-import { View, Text, Image, Dimensions, StyleSheet } from 'react-native'
-
-
-const Cartas = ({ source }: any) => {
+import { Image, StyleSheet, View } from 'react-native'
+import { Dimensions } from 'react-native';
+interface ItCartas {
+  source: string
+}
+export default function Cartas(routes: ItCartas) {
   return (
-    <View style={{}}>
-      <Image style={styles.back} source={{ uri: `https://www.themoviedb.org/t/p/w154${source.uri}` }} />
-      {/* <Text>{source.uri}</Text> */}
+    <View>
+      <Image style={styles.imagem}
+        source={{ uri: `https://www.themoviedb.org/t/p/w154${routes.source}` }} />
     </View>
   )
 }
 
-export default Cartas
 const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 5,
-    marginVertical: 10,
-    backgroundColor: "#555",
-    width: screenWidth,
-    flex: 1,
-    flexDirection: "row"
-  },
-  back: {
+  imagem: {
     width: screenWidth * 0.2,
-    height: "100%"
+    height: "100%",
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5
   }
 })

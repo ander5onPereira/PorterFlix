@@ -1,17 +1,11 @@
 import "react-native-gesture-handler";
-import { useNavigation } from '@react-navigation/native'
 import React, { useState, useLayoutEffect } from 'react'
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native'
-import { RectButton } from 'react-native-gesture-handler'
-import { API_KEY } from '../../../config'
+import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
+import { TOKEN } from '../../../config'
 import { ITResult } from '../../interfaces/ITResult'
 import { ITUpcoming } from '../../interfaces/ITUpcoming'
-import Cartas from "./components/Cartas"
 import Loading from './components/Loading';
-
-
-const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
+import ItemList from "./components/ItemList";
 
 export default function ScrollInfinito() {
   const [feed, setFeed] = useState<Array<ITResult>>([]);
@@ -29,7 +23,7 @@ export default function ScrollInfinito() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + API_KEY
+        'Authorization': 'Bearer ' + TOKEN
       }
     });
     const data: ITUpcoming = await response.json();
@@ -42,23 +36,11 @@ export default function ScrollInfinito() {
   useLayoutEffect(() => {
     loadPage();
   }, [])
-  function formatData(itemData: string) {
 
-    var data = itemData.split("-")
-    if (data) {
-      return `${data[2]}/${data[1]}/${data[0]}`;
-    }
-    return ""
-  }
   async function refreshList() {
     setRefresh(true);
     await loadPage(1, true);
     setRefresh(false);
-  }
-  const navigation = useNavigation();
-
-  function handlerDetalhe(idFilme: number) {
-    navigation.navigate("Detalhe", { idFilme: idFilme });
   }
 
   return (
@@ -71,40 +53,20 @@ export default function ScrollInfinito() {
         ListFooterComponent={loading ? <Loading /> : null}
         onRefresh={refreshList}
         refreshing={refresh}
-        renderItem={({ item, index }) => (
-          <RectButton onPress={() => handlerDetalhe(item.id)} style={styles.containerButton}>
-            <Cartas source={{ uri: item.poster_path }} />
-            <View style={{ marginLeft: 10, justifyContent: "space-around" }}>
-              <View style={{ width: screenWidth * 0.55, alignItems: "center", justifyContent: "center", height: "40%" }}>
-                <Text style={{ fontWeight: "bold", fontSize: 18 }}>{item.title}</Text>
-              </View>
-              <View>
-                <Text>Lançamento: {formatData(item.release_date)}</Text>
-              </View>
-            </View>
-            <View style={{ marginLeft: 10, justifyContent: "space-around" }}>
-              <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Text style={{ fontWeight: "bold", fontSize: 18, color: "#0D6E9C" }}>{item.vote_average}</Text>
-              </View>
-              <View style={{ alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
-                <View>
-                  <Text>Votos</Text>
-                </View>
-                <View>
-                  <Text>{item.vote_count}</Text>
-                </View>
-              </View>
-            </View>
-          </RectButton>
+        renderItem={({ item }) => (
+          <ItemList data={item} />
         )}
       />
     </View>
   )
 }
 
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     width: screenWidth,
+    height: "100%",
     backgroundColor: "rgba(10, 22, 38,0.7)"
   },
   containerButton: {
@@ -122,7 +84,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
-
     elevation: 6,
   }
 })
