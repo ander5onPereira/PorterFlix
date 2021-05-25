@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { Video } from "expo-av";
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import videoBack from "../../../assets/video/Train.mp4";
 import Logo from "../../images/PorterFlix-logo.png";
+import Button from "./components/Button";
 
 export default function Home() {
   const navigation = useNavigation();
@@ -30,7 +30,6 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-
       <Video
         ref={video}
         style={styles.backgroundVideo}
@@ -39,19 +38,16 @@ export default function Home() {
         isMuted={true}
         resizeMode="cover"
         isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
+        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
-
-      <Image source={Logo} style={{ resizeMode: "contain", width: screenWidth * 0.6, transform: [{ rotate: `${graus}deg` }] }} />
-      <RectButton onPress={handlerList} style={styles.button}>
-        <Text style={styles.textBtn}>Filmes
-        </Text>
-      </RectButton>
+      <Image
+        source={Logo}
+        style={[styles.logo, { transform: [{ rotate: `${graus}deg` }] }]}
+      />
+      <Button text={"Filmes"} functionButton={handlerList} />
     </View>
   );
 }
-const color = "#04B2D9";
-const backgroud = "#0A1626";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
@@ -59,16 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     width: screenWidth,
-    height: screenHeight
-  },
-  button: {
-    backgroundColor: color,
-    borderRadius: 15,
-    width: screenWidth * 0.8,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 2,
+    height: screenHeight,
   },
   backgroundVideo: {
     height: screenHeight + 30,
@@ -78,15 +65,10 @@ const styles = StyleSheet.create({
     left: 0,
     alignItems: "stretch",
     bottom: 0,
-    right: 0
+    right: 0,
   },
-  input: {
-    backgroundColor: "#fff",
-    marginVertical: 10
+  logo: {
+    resizeMode: "contain",
+    width: screenWidth * 0.6,
   },
-  textBtn: {
-    fontWeight: "bold",
-    fontSize: 18,
-    color: backgroud
-  }
-})
+});

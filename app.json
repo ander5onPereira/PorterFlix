@@ -30,7 +30,8 @@
     },
     "android": {
       "package": "br.com.arpdev.porterflix",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": []
     }
   }
 }

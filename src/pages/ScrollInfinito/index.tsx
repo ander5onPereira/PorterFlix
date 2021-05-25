@@ -1,10 +1,10 @@
 import "react-native-gesture-handler";
-import React, { useState, useLayoutEffect } from 'react'
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
-import { TOKEN } from '../../../config'
-import { ITResult } from '../../interfaces/ITResult'
-import { ITUpcoming } from '../../interfaces/ITUpcoming'
-import Loading from './components/Loading';
+import React, { useState, useLayoutEffect } from "react";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { TOKEN } from "../../../config";
+import { ITResult } from "../../interfaces/ITResult";
+import { ITUpcoming } from "../../interfaces/ITUpcoming";
+import Loading from "./components/Loading";
 import ItemList from "./components/ItemList";
 
 export default function ScrollInfinito() {
@@ -18,24 +18,25 @@ export default function ScrollInfinito() {
     if (total && pageNumber > total) return;
     setLoading(true);
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?language=pt-BR&page=${pageNumber}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + TOKEN
+      `https://api.themoviedb.org/3/movie/upcoming?language=pt-BR&page=${pageNumber}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + TOKEN,
+        },
       }
-    });
+    );
     const data: ITUpcoming = await response.json();
     setFeed(shouldRefresh ? data.results : [...feed, ...data.results]);
     setTotal(data.total_pages);
     setPage(pageNumber + 1);
     setLoading(false);
-
   }
   useLayoutEffect(() => {
     loadPage();
-  }, [])
+  }, []);
 
   async function refreshList() {
     setRefresh(true);
@@ -47,18 +48,16 @@ export default function ScrollInfinito() {
     <View style={styles.container}>
       <FlatList
         data={feed}
-        keyExtractor={post => String(post.id)}
+        keyExtractor={(post) => String(post.id)}
         onEndReached={() => loadPage()}
-        onEndReachedThreshold={0.20}
+        onEndReachedThreshold={0.2}
         ListFooterComponent={loading ? <Loading /> : null}
         onRefresh={refreshList}
         refreshing={refresh}
-        renderItem={({ item }) => (
-          <ItemList data={item} />
-        )}
+        renderItem={({ item }) => <ItemList data={item} />}
       />
     </View>
-  )
+  );
 }
 
 const screenWidth = Dimensions.get("window").width;
@@ -67,23 +66,6 @@ const styles = StyleSheet.create({
   container: {
     width: screenWidth,
     height: "100%",
-    backgroundColor: "rgba(10, 22, 38,0.7)"
+    backgroundColor: "rgba(10, 22, 38,0.7)",
   },
-  containerButton: {
-    borderRadius: 5,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    backgroundColor: "#fff",
-    flex: 1,
-    flexDirection: "row",
-    height: screenHeight * 0.15,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    elevation: 6,
-  }
-})
+});
